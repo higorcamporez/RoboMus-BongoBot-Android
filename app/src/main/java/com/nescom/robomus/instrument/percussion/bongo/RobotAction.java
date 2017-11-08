@@ -58,54 +58,59 @@ public abstract class RobotAction extends Thread{
     * Message to Arduino:  action Arduino code (30), string
     */
     public void playBongoDef1(OSCMessage oscMessage) {
-        Log.i("RobotAction", "playBongo1() - inicio");
+        Log.i("RobotAction", "playBongoDef1() - inicio");
 
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
-        Short relativeTime = Short.parseShort(oscMessage.getArguments().get(1).toString());
+        Integer relativeTime = Integer.parseInt(oscMessage.getArguments().get(1).toString());
         Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
 
 
-        byte lowRelativeTime =  (byte)(relativeTime&0xFF);
-        byte highRelativeTime = (byte)(relativeTime>>8);
+        byte low2RelativeTime =  (byte)(relativeTime&0xFF);
+        byte lowRelativeTime =  (byte)((relativeTime>>8)&0xFF);
+        byte high2RelativeTime =  (byte)((relativeTime>>16)&0xFF);
+        byte highRelativeTime = (byte)(relativeTime>>24);
+
         byte lowDuration = (byte)(duration&0xFF);
         byte highDuration = (byte)(duration>>8);
 
 
         byte idMsgArduino = convertId( idMessage );
-        byte[] data = { 10, idMsgArduino, highRelativeTime, lowRelativeTime, highDuration,
-                        lowDuration  };
-
-        usbService.write(data);
-        nBytes+=data.length;
-        lastBytes = data.length;
-
-
-        Log.i("RobotAction", "playBongo1() - fim");
-
-    }
-    public void playBongoDef2(OSCMessage oscMessage) {
-        Log.i("RobotAction", "playBongo2() - inicio");
-
-        Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
-        Short relativeTime = Short.parseShort(oscMessage.getArguments().get(1).toString());
-        Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
-
-
-        byte lowRelativeTime =  (byte)(relativeTime&0xFF);
-        byte highRelativeTime = (byte)(relativeTime>>8);
-        byte lowDuration = (byte)(duration&0xFF);
-        byte highDuration = (byte)(duration>>8);
-
-
-        byte idMsgArduino = convertId( idMessage );
-        byte[] data = { 20, idMsgArduino, highRelativeTime, lowRelativeTime, highDuration,
+        byte[] data = { 10, idMsgArduino, highRelativeTime, high2RelativeTime, lowRelativeTime, low2RelativeTime, highDuration,
                 lowDuration  };
 
         usbService.write(data);
         nBytes+=data.length;
         lastBytes = data.length;
 
-        Log.i("RobotAction", "playBongo2() - fim");
+
+        Log.i("RobotAction", "playBongoDef1() - fim");
+
+    }
+    public void playBongoDef2(OSCMessage oscMessage) {
+        Log.i("RobotAction", "playBongoDef2() - inicio");
+
+        Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
+        Short relativeTime = Short.parseShort(oscMessage.getArguments().get(1).toString());
+        Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
+
+
+        byte low2RelativeTime =  (byte)(relativeTime&0xFF);
+        byte lowRelativeTime =  (byte)((relativeTime>>8)&0xFF);
+        byte high2RelativeTime =  (byte)((relativeTime>>16)&0xFF);
+        byte highRelativeTime = (byte)(relativeTime>>24);
+        byte lowDuration = (byte)(duration&0xFF);
+        byte highDuration = (byte)(duration>>8);
+
+
+        byte idMsgArduino = convertId( idMessage );
+        byte[] data = { 20, idMsgArduino, highRelativeTime, high2RelativeTime, lowRelativeTime, low2RelativeTime, highDuration,
+                lowDuration  };
+
+        usbService.write(data);
+        nBytes+=data.length;
+        lastBytes = data.length;
+
+        Log.i("RobotAction", "playBongoDef2() - fim");
     }
 
 

@@ -48,8 +48,8 @@ public class Bongo extends Instrument {
         this.polyphony = 2;
         this.typeFamily = "Percussion";
         this.specificProtocol =
-                "</playBongoDef1;relative_time_i;durationMillis_i>" +
-                "</playBongoDef2;relative_time_i;durationMillis_i>" +
+                "</playBongoDef1;relative_time_i;durationMillis_i>" + //grave
+                "</playBongoDef2;relative_time_i;durationMillis_i>" + //agudo
                 "</playBongo1;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
                 "</playBongo2;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
                 "</playBongoTogether;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>"+
@@ -79,7 +79,7 @@ public class Bongo extends Instrument {
         //clean view
         //final TextView textLog = (TextView) this.activity.findViewById(R.id.textViewLog);
         this.textLog = textLog;
-        textLog.setText("----------------------LOG-----------------");
+        textLog.setText("----------------------LOG-----------------\n");
 
     }
 
@@ -181,21 +181,29 @@ public class Bongo extends Instrument {
         OSCListener listener = new OSCListener() {
 
             public void acceptMessage(java.util.Date time, OSCMessage message) {
-                Log.d("buffer","recebeu msg");
+
+                String log = "";
+
                 String header = (String) message.getAddress();
                 header = header.substring(1);
                 String[] split = header.split("\\/", -1);
+
                 if(split.length == 2 && split[1].equals("handshake")){
                     startBuffer(message);
                 }else{
+                    log += message.getAddress()+" ";
                     List l = message.getArguments();
+                    log += "[";
                     for (Object l1 : l) {
-                        Log.d("buffer","object=" + l1);
+                        log +=l1+",";
                     }
+                    log += ']';
+
                     //verificar se a mensagem é válida
 
                     buffer.add(message);
                 }
+                Log.d("Bongo","Message: "+log);
             }
         };
         this.receiver.addListener(this.myOscAddress+"/*", listener);

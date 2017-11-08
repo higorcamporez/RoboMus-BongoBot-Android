@@ -35,6 +35,7 @@ public class Buffer extends RobotAction{
     private String serverOscAddress;
     private int serverPort;
     private UsbService usbService;
+    private Bongo bongo;
 
     public Buffer(Activity activity, Bongo bongo) {
         super(bongo);
@@ -42,8 +43,6 @@ public class Buffer extends RobotAction{
         this.messages = new ArrayList<OSCMessage>();
         this.idProcessedMsg = new ArrayList<Integer>();
         this.textLog = (TextView) activity.findViewById(R.id.textViewLog);
-
-
 
         /* enviar robo para posicao inicial */
         if(bongo.getUsbService() != null)
@@ -81,7 +80,7 @@ public class Buffer extends RobotAction{
       * @paran format represents the msg format
      */
     public int getIdConfirmMessage(int idFromArduino){
-        imprimirId();
+        //imprimirId();
 
         for (Integer id: this.idProcessedMsg) {
 
@@ -188,7 +187,7 @@ public class Buffer extends RobotAction{
         final StringBuffer sb = new StringBuffer(txt);
         sb.setCharAt(txt.length()-1, ']');
         final TextView txtLog = this.textLog;
-        activity.runOnUiThread(new Runnable() {
+        bongo.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
@@ -243,7 +242,7 @@ public class Buffer extends RobotAction{
                             break;
                         case "playBongoDef2":
                             this.playBongoDef2(oscMessage);
-                           // this.writeMsgLog("playNote: Format = [ id, RT, dur]",oscMessage);
+                            //this.writeMsgLog("playNote: Format = [ id, RT, dur]",oscMessage);
                             break;
                         case "playNote":
                             this.playNote(oscMessage);
@@ -256,6 +255,11 @@ public class Buffer extends RobotAction{
                     }
 
                     remove();
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
                 }
 
