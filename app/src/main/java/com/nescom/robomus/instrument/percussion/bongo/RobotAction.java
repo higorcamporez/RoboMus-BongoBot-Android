@@ -57,8 +57,8 @@ public abstract class RobotAction extends Thread{
     * Format OSC= [id, RT, dur, descent angle, rise angle]
     * Message to Arduino:  action Arduino code (30), string
     */
-    public void playBongoDef1(OSCMessage oscMessage) {
-        Log.i("RobotAction", "playBongoDef1() - inicio");
+    public void playBongoDefG(OSCMessage oscMessage) {
+        Log.i("RobotAction", "playBongoDefG() - inicio");
 
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
         Integer relativeTime = Integer.parseInt(oscMessage.getArguments().get(1).toString());
@@ -83,11 +83,11 @@ public abstract class RobotAction extends Thread{
         lastBytes = data.length;
 
 
-        Log.i("RobotAction", "playBongoDef1() - fim");
+        Log.i("RobotAction", "playBongoDefG() - fim");
 
     }
-    public void playBongoDef2(OSCMessage oscMessage) {
-        Log.i("RobotAction", "playBongoDef2() - inicio");
+    public void playBongoDefA(OSCMessage oscMessage) {
+        Log.i("RobotAction", "playBongoDefA() - inicio");
 
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
         Short relativeTime = Short.parseShort(oscMessage.getArguments().get(1).toString());
@@ -110,7 +110,7 @@ public abstract class RobotAction extends Thread{
         nBytes+=data.length;
         lastBytes = data.length;
 
-        Log.i("RobotAction", "playBongoDef2() - fim");
+        Log.i("RobotAction", "playBongoDefA() - fim");
     }
 
 

@@ -1,6 +1,7 @@
 package com.nescom.robomus.views;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -40,6 +41,7 @@ public class LogActivity extends AppCompatActivity {
     private EditText editText;
     private MyHandler mHandler;
     public Bongo bongo = null;
+    ProgressDialog progressDialog;
 
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -99,15 +101,95 @@ public class LogActivity extends AppCompatActivity {
 
 
 
+
         final Button startButton = (Button) findViewById(R.id.buttonStart);
         final Activity thisActivity = this;
         final TextView textLog = (TextView) thisActivity.findViewById(R.id.textViewLog);
-        textLog.setText("clicou");
+
+
+
         startButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                progressDialog = new ProgressDialog(LogActivity.this);
+                progressDialog.setMessage("Loading..."); // Setting Message
+                progressDialog.setTitle("ProgressDialog"); // Setting Title
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+                //progressDialog.show(); // Display Progress Dialog
+                progressDialog.setCancelable(false);
 
-                if(startButton.getText().equals("Stop Robot")){
+                thisActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(startButton.getText().equals("Stop Robot")){
+                            Log.i("stop","instrument disconnected");
+                            if(bongo != null){
+                                bongo.disconnect();
+                                bongo = null;
+                                startButton.setText("Start Robot");
+                            }
+                        }else {
+
+                            Intent it = getIntent();
+
+                            int port = Integer.parseInt(it.getStringExtra("port"));
+
+                            String oscInstrumentAdress = it.getStringExtra("instrument");
+                            String name = oscInstrumentAdress.substring(1);
+                            int check = Integer.parseInt(it.getStringExtra("arduino"));
+                            textLog.setText("waiting...");
+                            if (check == 0) {
+
+                                bongo = new Bongo(  name, oscInstrumentAdress, port,
+                                        null, ipAddress, thisActivity, textLog);
+
+                                long timing = System.currentTimeMillis();
+                                while(!bongo.isConneted() && (System.currentTimeMillis() - timing) < 3000){
+                                    //Log.i("bongo","isConnected="+bongo.isConneted()+"tempo="+(System.currentTimeMillis() - timing));
+
+                                }
+                                if(bongo.isConneted()){
+                                    startButton.setText("Stop Robot");
+                                }else{
+                                    bongo.stop();
+                                    textLog.setText("no connection");
+
+                                }
+                                //progressDialog.dismiss();
+                            } else {
+
+                                if (usbService != null) {
+
+
+                                    bongo = new Bongo(  name, oscInstrumentAdress, port,
+                                            usbService, ipAddress, thisActivity, textLog);
+
+                                    long timing = System.currentTimeMillis();
+                                    while(!bongo.isConneted() && (System.currentTimeMillis() - timing) < 3000){
+
+                                    }
+                                    if(bongo.isConneted()){
+                                        startButton.setText("Stop Robot");
+                                    }else{
+                                        bongo.stop();
+                                        textLog.setText("no connection");
+                                    }
+
+                                } else {
+
+                                    Toast.makeText(getApplicationContext(), "Connect the arduino first", Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            }
+
+                        }
+                    }
+                });
+
+
+               /* if(startButton.getText().equals("Stop Robot")){
                     Log.i("stop","instrument disconnected");
                     if(bongo != null){
                         bongo.disconnect();
@@ -115,6 +197,7 @@ public class LogActivity extends AppCompatActivity {
                         startButton.setText("Start Robot");
                     }
                 }else {
+
                     Intent it = getIntent();
 
                     int port = Integer.parseInt(it.getStringExtra("port"));
@@ -125,13 +208,23 @@ public class LogActivity extends AppCompatActivity {
 
 
 
+
                     if (check == 0) {
 
                         bongo = new Bongo(  name, oscInstrumentAdress, port,
                                             null, ipAddress, thisActivity, textLog);
-                        bongo.listenThread();
-                        bongo.handshake();
-                        startButton.setText("Stop Robot");
+
+                        long timing = System.currentTimeMillis();
+                        while(!bongo.isConneted() && (System.currentTimeMillis() - timing) < 3000){
+                            //Log.i("bongo","isConnected="+bongo.isConneted()+"tempo="+(System.currentTimeMillis() - timing));
+
+                        }
+                        if(bongo.isConneted()){
+                            startButton.setText("Stop Robot");
+                        }else{
+                            bongo.stop();
+                            textLog.setText("No Connection...");
+                        }
                     } else {
 
                         if (usbService != null) {
@@ -139,9 +232,17 @@ public class LogActivity extends AppCompatActivity {
 
                             bongo = new Bongo(  name, oscInstrumentAdress, port,
                                                 usbService, ipAddress, thisActivity, textLog);
-                            bongo.listenThread();
-                            bongo.handshake();
-                            startButton.setText("Stop Robot");
+
+                            long timing = System.currentTimeMillis();
+                            while(!bongo.isConneted() && (System.currentTimeMillis() - timing) < 3000){
+
+                            }
+                            if(bongo.isConneted()){
+                                startButton.setText("Stop Robot");
+                            }else{
+                                bongo.stop();
+                                textLog.setText("No Connection...");
+                            }
 
                         } else {
 
@@ -149,7 +250,7 @@ public class LogActivity extends AppCompatActivity {
                         }
                     }
 
-                }
+                }*/
 
             }
         });

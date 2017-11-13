@@ -48,10 +48,10 @@ public class Bongo extends Instrument {
         this.polyphony = 2;
         this.typeFamily = "Percussion";
         this.specificProtocol =
-                "</playBongoDef1;relative_time_i;durationMillis_i>" + //grave
-                "</playBongoDef2;relative_time_i;durationMillis_i>" + //agudo
-                "</playBongo1;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
-                "</playBongo2;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
+                "</playBongoDefG;relative_time_i;durationMillis_i>" + //grave
+                "</playBongoDefA;relative_time_i;durationMillis_i>" + //agudo
+                "</playBongoG;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
+                "</playBongoA;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
                 "</playBongoTogether;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>"+
                 "</playNote;relative_time_i;durationMillis_i;note_s>";
 
@@ -79,7 +79,10 @@ public class Bongo extends Instrument {
         //clean view
         //final TextView textLog = (TextView) this.activity.findViewById(R.id.textViewLog);
         this.textLog = textLog;
-        textLog.setText("----------------------LOG-----------------\n");
+        //this.textLog.setText("Waiting Connection...");
+        listenThread();
+        handshake();
+        //this.textLog.setText("Waiting Connection...");
 
     }
 
@@ -245,22 +248,37 @@ public class Bongo extends Instrument {
 
 
     }
-    public void disconnect(){
-        List args = new ArrayList<>();
-        args.add(this.myOscAddress);
-        OSCMessage msg = new OSCMessage(this.serverOscAddress+"/disconnect/instrument", args);
+    public void disconnect() {
+        if (this.serverOscAddress != null) {
 
-        try {
-            this.sender.send(msg);
-            receiver.stopListening();
-            buffer.interrupt();
-            this.sender.close();
-            this.receiver.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Bongo.class.getName()).log(Level.SEVERE, null, ex);
+            List args = new ArrayList<>();
+            args.add(this.myOscAddress);
+            OSCMessage msg = new OSCMessage(this.serverOscAddress + "/disconnect/instrument", args);
+
+            try {
+                this.sender.send(msg);
+                receiver.stopListening();
+                buffer.interrupt();
+                this.sender.close();
+                this.receiver.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Bongo.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+    }
+
+    public void stop() {
+        receiver.stopListening();
+        buffer.interrupt();
+        //this.sender.close();
+        this.receiver.close();
+    }
 
 
+
+
+    public boolean isConneted(){
+        return (this.serverOscAddress != null);
     }
 
 }

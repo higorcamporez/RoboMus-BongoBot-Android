@@ -222,6 +222,9 @@ public class Buffer extends RobotAction{
             if (!this.messages.isEmpty()&& (getBufferArduino() >15)  ) {
 
                 final OSCMessage oscMessage = messages.get(0);
+                if(oscMessage.getArguments().isEmpty()){
+                    continue;
+                }
                 int idMessage = Integer.parseInt(oscMessage.getArguments().get(0).toString());
 
                 if(getIdConfirmMessage(idMessage) != -1){ //o arduino aceita id até 128 apenas
@@ -236,12 +239,12 @@ public class Buffer extends RobotAction{
 
 
                     switch (header) {
-                        case "playBongoDef1":
-                            this.playBongoDef1(oscMessage);
+                        case "playBongoDefG":
+                            this.playBongoDefG(oscMessage);
                             //this.writeMsgLog("playString: Format = [id, RT, dur]",oscMessage);
                             break;
-                        case "playBongoDef2":
-                            this.playBongoDef2(oscMessage);
+                        case "playBongoDefA":
+                            this.playBongoDefA(oscMessage);
                             //this.writeMsgLog("playNote: Format = [ id, RT, dur]",oscMessage);
                             break;
                         case "playNote":
