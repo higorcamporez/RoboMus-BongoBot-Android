@@ -247,6 +247,23 @@ public class Buffer extends RobotAction{
                             this.playBongoDefA(oscMessage);
                             //this.writeMsgLog("playNote: Format = [ id, RT, dur]",oscMessage);
                             break;
+
+                        case "playBongoTogetherDef":
+                            this.playBongoTogetherDef(oscMessage);
+                            //this.writeMsgLog("playNote: Format = [ id, RT, dur]",oscMessage);
+                            break;
+                        case "playBongoTogether":
+                            this.playBongoTogether(oscMessage);
+                            //this.writeMsgLog("playNote: Format = [ id, RT, dur]",oscMessage);
+                            break;
+                        case "playBongoG":
+                            this.playBongoG(oscMessage);
+                            //this.writeMsgLog("playNote: Format = [ id, RT, dur]",oscMessage);
+                            break;
+                        case "playBongoA":
+                            this.playBongoA(oscMessage);
+                            //this.writeMsgLog("playNote: Format = [ id, RT, dur]",oscMessage);
+                            break;
                         case "playNote":
                             this.playNote(oscMessage);
                            // this.writeMsgLog("testeMsg: Format OSC = [timestamp, id]",oscMessage);

@@ -61,7 +61,7 @@ public abstract class RobotAction extends Thread{
         Log.i("RobotAction", "playBongoDefG() - inicio");
 
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
-        Integer relativeTime = Integer.parseInt(oscMessage.getArguments().get(1).toString());
+        Long relativeTime = Long.parseLong(oscMessage.getArguments().get(1).toString());
         Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
 
 
@@ -90,7 +90,7 @@ public abstract class RobotAction extends Thread{
         Log.i("RobotAction", "playBongoDefA() - inicio");
 
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
-        Short relativeTime = Short.parseShort(oscMessage.getArguments().get(1).toString());
+        Long relativeTime = Long.parseLong(oscMessage.getArguments().get(1).toString());
         Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
 
 
@@ -113,6 +113,111 @@ public abstract class RobotAction extends Thread{
         Log.i("RobotAction", "playBongoDefA() - fim");
     }
 
+    public void playBongoTogetherDef(OSCMessage oscMessage) {
+        Log.i("RobotAction", "playBongoTogetherDef() - inicio");
+
+        Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
+        Long relativeTime = Long.parseLong(oscMessage.getArguments().get(1).toString());
+        Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
+
+        byte low2RelativeTime =  (byte)(relativeTime&0xFF);
+        byte lowRelativeTime =  (byte)((relativeTime>>8)&0xFF);
+        byte high2RelativeTime =  (byte)((relativeTime>>16)&0xFF);
+        byte highRelativeTime = (byte)(relativeTime>>24);
+        byte lowDuration = (byte)(duration&0xFF);
+        byte highDuration = (byte)(duration>>8);
+
+        byte idMsgArduino = convertId( idMessage );
+        byte[] data = { 30, idMsgArduino, highRelativeTime, high2RelativeTime, lowRelativeTime, low2RelativeTime, highDuration,
+                lowDuration  };
+
+        usbService.write(data);
+        nBytes+=data.length;
+        lastBytes = data.length;
+
+        Log.i("RobotAction", "playBongoTogetherDef() - fim");
+    }
+
+        public void playBongoTogether(OSCMessage oscMessage) {
+        Log.i("RobotAction", "playBongoTogether() - inicio");
+
+        Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
+        Long relativeTime = Long.parseLong(oscMessage.getArguments().get(1).toString());
+        Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
+        Byte descentAngle = Byte.parseByte(oscMessage.getArguments().get(3).toString());
+        Byte riseAngle = Byte.parseByte(oscMessage.getArguments().get(4).toString());
+
+        byte low2RelativeTime =  (byte)(relativeTime&0xFF);
+        byte lowRelativeTime =  (byte)((relativeTime>>8)&0xFF);
+        byte high2RelativeTime =  (byte)((relativeTime>>16)&0xFF);
+        byte highRelativeTime = (byte)(relativeTime>>24);
+        byte lowDuration = (byte)(duration&0xFF);
+        byte highDuration = (byte)(duration>>8);
+
+        byte idMsgArduino = convertId( idMessage );
+        byte[] data = { 40, idMsgArduino, highRelativeTime, high2RelativeTime, lowRelativeTime, low2RelativeTime, highDuration,
+                lowDuration, descentAngle, riseAngle  };
+
+        usbService.write(data);
+        nBytes+=data.length;
+        lastBytes = data.length;
+
+        Log.i("RobotAction", "playBongoTogether() - fim");
+    }
+
+    public void playBongoG(OSCMessage oscMessage) {
+        Log.i("RobotAction", "playBongoG() - inicio");
+
+        Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
+        Long relativeTime = Long.parseLong(oscMessage.getArguments().get(1).toString());
+        Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
+        Byte descentAngle = Byte.parseByte(oscMessage.getArguments().get(3).toString());
+        Byte riseAngle = Byte.parseByte(oscMessage.getArguments().get(4).toString());
+
+        byte low2RelativeTime =  (byte)(relativeTime&0xFF);
+        byte lowRelativeTime =  (byte)((relativeTime>>8)&0xFF);
+        byte high2RelativeTime =  (byte)((relativeTime>>16)&0xFF);
+        byte highRelativeTime = (byte)(relativeTime>>24);
+        byte lowDuration = (byte)(duration&0xFF);
+        byte highDuration = (byte)(duration>>8);
+
+        byte idMsgArduino = convertId( idMessage );
+        byte[] data = { 50, idMsgArduino, highRelativeTime, high2RelativeTime, lowRelativeTime, low2RelativeTime, highDuration,
+                lowDuration, descentAngle, riseAngle  };
+
+        usbService.write(data);
+        nBytes+=data.length;
+        lastBytes = data.length;
+
+        Log.i("RobotAction", "playBongoG() - fim");
+    }
+
+    public void playBongoA(OSCMessage oscMessage) {
+        Log.i("RobotAction", "playBongoA() - inicio");
+
+        Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
+        Long relativeTime = Long.parseLong(oscMessage.getArguments().get(1).toString());
+        Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
+        Byte descentAngle = Byte.parseByte(oscMessage.getArguments().get(3).toString());
+        Byte riseAngle = Byte.parseByte(oscMessage.getArguments().get(4).toString());
+
+        byte low2RelativeTime =  (byte)(relativeTime&0xFF);
+        byte lowRelativeTime =  (byte)((relativeTime>>8)&0xFF);
+        byte high2RelativeTime =  (byte)((relativeTime>>16)&0xFF);
+        byte highRelativeTime = (byte)(relativeTime>>24);
+        byte lowDuration = (byte)(duration&0xFF);
+        byte highDuration = (byte)(duration>>8);
+
+        byte idMsgArduino = convertId( idMessage );
+        byte[] data = { 60, idMsgArduino, highRelativeTime, high2RelativeTime, lowRelativeTime, low2RelativeTime, highDuration,
+                lowDuration, descentAngle, riseAngle  };
+
+        usbService.write(data);
+        nBytes+=data.length;
+        lastBytes = data.length;
+
+        Log.i("RobotAction", "playBongoA() - fim");
+    }
 
     public void playNote(OSCMessage oscMessage){
         Log.i("RobotAction", "playNote() - inicio");

@@ -53,6 +53,7 @@ public class Bongo extends Instrument {
                 "</playBongoG;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
                 "</playBongoA;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
                 "</playBongoTogether;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>"+
+                "</playBongoTogetherDef;relative_time_i;durationMillis_i>"+
                 "</playNote;relative_time_i;durationMillis_i;note_s>";
 
         if(usbService == null){
