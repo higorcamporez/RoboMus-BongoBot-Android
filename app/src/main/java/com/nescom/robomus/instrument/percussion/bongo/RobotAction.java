@@ -62,7 +62,7 @@ public abstract class RobotAction extends Thread{
 
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
         Long relativeTime = Long.parseLong(oscMessage.getArguments().get(1).toString());
-        Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
+        //Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
 
 
         byte low2RelativeTime =  (byte)(relativeTime&0xFF);
@@ -70,8 +70,8 @@ public abstract class RobotAction extends Thread{
         byte high2RelativeTime =  (byte)((relativeTime>>16)&0xFF);
         byte highRelativeTime = (byte)(relativeTime>>24);
 
-        byte lowDuration = (byte)(duration&0xFF);
-        byte highDuration = (byte)(duration>>8);
+        byte lowDuration = 0;
+        byte highDuration = 0;
 
 
         byte idMsgArduino = convertId( idMessage );
@@ -91,15 +91,15 @@ public abstract class RobotAction extends Thread{
 
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
         Long relativeTime = Long.parseLong(oscMessage.getArguments().get(1).toString());
-        Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
+        //Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
 
 
         byte low2RelativeTime =  (byte)(relativeTime&0xFF);
         byte lowRelativeTime =  (byte)((relativeTime>>8)&0xFF);
         byte high2RelativeTime =  (byte)((relativeTime>>16)&0xFF);
         byte highRelativeTime = (byte)(relativeTime>>24);
-        byte lowDuration = (byte)(duration&0xFF);
-        byte highDuration = (byte)(duration>>8);
+        byte lowDuration = 0;
+        byte highDuration = 0;
 
 
         byte idMsgArduino = convertId( idMessage );
@@ -118,14 +118,14 @@ public abstract class RobotAction extends Thread{
 
         Long idMessage = Long.parseLong(oscMessage.getArguments().get(0).toString());
         Long relativeTime = Long.parseLong(oscMessage.getArguments().get(1).toString());
-        Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
+        //Short duration = Short.parseShort(oscMessage.getArguments().get(2).toString());
 
         byte low2RelativeTime =  (byte)(relativeTime&0xFF);
         byte lowRelativeTime =  (byte)((relativeTime>>8)&0xFF);
         byte high2RelativeTime =  (byte)((relativeTime>>16)&0xFF);
         byte highRelativeTime = (byte)(relativeTime>>24);
-        byte lowDuration = (byte)(duration&0xFF);
-        byte highDuration = (byte)(duration>>8);
+        byte lowDuration = (byte)(0);
+        byte highDuration = (byte)(0);
 
         byte idMsgArduino = convertId( idMessage );
         byte[] data = { 30, idMsgArduino, highRelativeTime, high2RelativeTime, lowRelativeTime, low2RelativeTime, highDuration,

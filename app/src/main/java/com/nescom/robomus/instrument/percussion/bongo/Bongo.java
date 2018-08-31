@@ -48,12 +48,12 @@ public class Bongo extends Instrument {
         this.polyphony = 2;
         this.typeFamily = "Percussion";
         this.specificProtocol =
-                "</playBongoDefG;relative_time_i;durationMillis_i>" + //grave
-                "</playBongoDefA;relative_time_i;durationMillis_i>" + //agudo
+                "</playBongoDefG;relative_time_i>" + //grave
+                "</playBongoDefA;relative_time_i>" + //agudo
                 "</playBongoG;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
                 "</playBongoA;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>" +
-                "</playBongoTogether;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>"+
-                "</playBongoTogetherDef;relative_time_i;durationMillis_i>"+
+                //"</playBongoTogether;relative_time_i;durationMillis_i;descentAngle_i;riseAngle_i>"+
+                "</playBongoTogetherDef;relative_time_i>"+
                 "</playNote;relative_time_i;durationMillis_i;note_s>";
 
         if(usbService == null){
